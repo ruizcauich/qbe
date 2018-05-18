@@ -1,0 +1,104 @@
+html, body{
+    height: 100vh;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: #e4e3e3;
+    margin: 0;
+}
+.login-wrapper{
+    width: 400px;
+    margin: 0 auto;
+    position: relative;
+    top:50%;
+    transform: translateY(-50%);
+    border: 1px  #aaa solid;
+    padding: 20px;
+    border-radius: 4px;
+    background-color: #fff;
+}
+.login-wrapper label{
+    display: inline-block;
+    min-width: 100px;
+    margin-bottom: 10px;
+}
+
+.mensaje{
+    background-color: #fff;
+    border-bottom: 1px  #aaa solid;
+    height: 200px;
+    padding: 20px;
+    
+}
+.error{
+    background-color: #d47f7f;
+    color: #ce0202;
+    padding: 20px;
+}
+header{
+    background-color: rgb(9, 86, 138);
+    --altura-header:50px;
+    height: var(--altura-header);
+}
+.menu-usuario{
+    float: right;
+    margin-right: 30px;
+    max-height: 50px;
+    color: #fff;
+    transition: all 0.4s;
+    overflow: hidden;
+}
+.menu-usuario:hover{
+    background-color: #0e73b6;
+    max-height: 300px;
+}
+.menu-usuario ul{ list-style: none; padding: 0px; margin: 0px;}
+.menu-usuario li{
+    height: var(--altura-header);
+}
+.menu-usuario li:hover{
+    background-color: rgb(38, 152, 228);
+}
+.menu-usuario img{
+    height: 100%;
+    vertical-align: middle;
+}
+.menu-usuario span{
+    vertical-align: middle;
+}
+.menu-usuario a{
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color:#fff;
+    padding: 10px 20px
+    
+}
+.menu-usuario a:hover{
+    
+}
+main{
+    padding: 20px;
+    height: 500px;
+    background-size: 100% 100%;
+}
+
+.page-footer{
+    background-color: #fff;
+    border-top: 1px #ccc solid;
+    padding: 5px 20px;
+    color: #888;
+    position: fixed;
+    bottom:0px;
+    width: 100%;
+}
+
+.tarjeta{
+    display:inline-block;
+    background-color: #fff;
+    border-radius: 5px;
+    border: #ccc 1px soild;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.cuerpo-tarjeta{
+    padding: 20px;
+}
