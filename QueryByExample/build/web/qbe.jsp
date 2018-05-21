@@ -34,18 +34,24 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="assets/css/estilos.css">
+        <link rel="stylesheet" href="assets/css/botones.css">
+        
         <title>JSP Page</title>
     </head>
     <body>
-        <% for(int i=0; i<bds.size(); i++){%>
-        <div class="tarjeta">
-            <h3><%= bds.get(i)%></h3>
-            <div class="cuerpo-tarjeta">
-                 <a class="boton boton-exito" href="usarbd?bd=<%= bds.get(i)%>">Usar</a>
-            </div>
-        
-        <%}%>
-        
-       
+        <ul class="show-tables">
+            <h1>Tablas:</h1>
+            <% for(int i=0; i<bds.size(); i++){%>
+            <li><button class="table-button"><%= bds.get(i)%></button></li>
+            <%}%>
+        </ul>
+        <div id="trabajo">
+            
+        </div>
+
+
+        <script src="assets/js/qbe.js"></script>
     </body>
 </html>

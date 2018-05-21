@@ -136,6 +136,33 @@ public class Conexion {
     public ArrayList<String> getNonbreCampos(String tabla){
         ArrayList<String> fields= new ArrayList<String>();
         
+        DatabaseMetaData dbmd;
+        try {
+            dbmd = con.getMetaData();
+            ResultSet chms = dbmd.getTables(null, null, "%", null);
+            while (chms.next())
+            {
+                fields.add( chms.getString(3) );
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch(Exception e){
+        }
         return fields;
+        
+        
+    }
+    public void cerrar(){
+        try {
+            if(this.con== null || this.con.isClosed())
+                return;
+                this.con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
     }
 }
