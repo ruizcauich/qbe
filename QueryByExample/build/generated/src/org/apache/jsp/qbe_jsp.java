@@ -55,19 +55,20 @@ public final class qbe_jsp extends org.apache.jasper.runtime.HttpJspBase
     if( session.getAttribute("usuario")==null ){
         response.sendRedirect("index.html");
     }
-    if( session.getAttribute("basedatos")==null){
+    else if( session.getAttribute("basedatos")==null){
         response.sendRedirect("bddisponibles.jsp");
     }
-    
+    try{
     Conexion c = new Conexion(
             request.getSession().getAttribute("host").toString(),
             Integer.valueOf(request.getSession().getAttribute("puerto").toString()),
             request.getSession().getAttribute("usuario").toString(),
-            request.getSession().getAttribute("contrasena").toString()
+            request.getSession().getAttribute("contrasena").toString(),
+            request.getSession().getAttribute("basedatos").toString()
     );
     
     c.conectar();
-    ArrayList<String> bds = c.getNombreBasesDeDatos();
+    ArrayList<String> bds = c.getNombreTablas();
     c.desconectar();
 
       out.write("\n");
@@ -75,12 +76,40 @@ public final class qbe_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("<html>\n");
       out.write("    <head>\n");
       out.write("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
+      out.write("        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n");
+      out.write("        <link rel=\"stylesheet\" href=\"assets/css/estilos.css\">\n");
+      out.write("        <link rel=\"stylesheet\" href=\"assets/css/botones.css\">\n");
+      out.write("        <link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">\n");
       out.write("        <title>JSP Page</title>\n");
       out.write("    </head>\n");
       out.write("    <body>\n");
-      out.write("        <h1>Hello World!</h1>\n");
+      out.write("        <ul class=\"show-tables\">\n");
+      out.write("            <h1>Tablas:</h1>\n");
+      out.write("            ");
+ for(int i=0; i<bds.size(); i++){
+      out.write("\n");
+      out.write("            <li><button class=\"table-button\">");
+      out.print( bds.get(i));
+      out.write("</button></li>\n");
+      out.write("            ");
+}
+      out.write("\n");
+      out.write("        </ul>\n");
+      out.write("        <div id=\"area-principal\">\n");
+      out.write("            <div class=\"toolbar\">\n");
+      out.write("            <button class=\"control\" style=\"font-size:24px\"><i class=\"material-icons\">done</i></button>\n");
+      out.write("            </div>\n");
+      out.write("            <div id=\"trabajo\">\n");
+      out.write("        \n");
+      out.write("                </div>\n");
+      out.write("        </div>\n");
+      out.write("        \n");
+      out.write("\n");
+      out.write("\n");
+      out.write("        <script src=\"assets/js/qbe.js\"></script>\n");
       out.write("    </body>\n");
       out.write("</html>\n");
+}catch(Exception e){}
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;

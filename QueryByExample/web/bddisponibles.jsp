@@ -14,17 +14,19 @@
     if( session.getAttribute("usuario")==null ){
         response.sendRedirect("index.html");
     }
+    try{
     
-    Conexion c = new Conexion(
-            request.getSession().getAttribute("host").toString(),
-            Integer.valueOf(request.getSession().getAttribute("puerto").toString()),
-            request.getSession().getAttribute("usuario").toString(),
-            request.getSession().getAttribute("contrasena").toString()
-    );
+        Conexion c = new Conexion(
+                request.getSession().getAttribute("host").toString(),
+                Integer.valueOf(request.getSession().getAttribute("puerto").toString()),
+                request.getSession().getAttribute("usuario").toString(),
+                request.getSession().getAttribute("contrasena").toString()
+        );
+
+        c.conectar();
+        ArrayList<String> bds = c.getNombreBasesDeDatos();
+        c.desconectar();
     
-    c.conectar();
-    ArrayList<String> bds = c.getNombreBasesDeDatos();
-    c.desconectar();
 %>
 <!DOCTYPE html>
 <html>
@@ -84,3 +86,4 @@
                 
     </body>
 </html>
+<%}catch(Exception e){}%>

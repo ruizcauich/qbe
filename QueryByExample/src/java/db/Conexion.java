@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -72,15 +73,51 @@ public class Conexion {
     public boolean hayConexion() {
         return (con!=null );
     }
-    public ResultSet ejecutarConsulta( String query){
+    public ArrayList<ArrayList> ejecutarConsulta( String query){
+        ArrayList<ArrayList> datos = new ArrayList<ArrayList>();
          try {
              conectar();
-            return  st.executeQuery(query);
+             ResultSet rs = st.executeQuery(query);
+             datos.add(this.getNombreCampos(rs));
+             while( rs.next() ){
+                 ArrayList row = new ArrayList();
+                 for(int i = 0; i< datos.get(0).size(); i++){
+                     row.add( rs.getString(datos.get(0).get(i).toString()));
+                 }
+                 datos.add(row);
+             }
+             
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            
         }
+         return datos;
     }
+    
+    
+    private ArrayList<String> getNombreCampos(ResultSet rs){
+        ArrayList<String> fields= new ArrayList<String>();
+        
+        try {
+             
+            ResultSetMetaData rsMetaData = rs.getMetaData();
+            int numberOfColumns = rsMetaData.getColumnCount();
+            for (int i = 1; i < numberOfColumns + 1; i++) {
+                String columnName = rsMetaData.getColumnName(i);
+                fields.add(columnName);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch(Exception e){
+        }
+        return fields;
+        
+        
+    }   
+    
+    
     
     public boolean ejecutarInstruccion(String query){
         try {
@@ -92,6 +129,7 @@ public class Conexion {
             return false;
         }
     }
+    
     
     public ArrayList<String> getNombreBasesDeDatos(){
         ArrayList<String> bdts= new ArrayList<String>();
@@ -133,36 +171,5 @@ public class Conexion {
         
         
     }
-    public ArrayList<String> getNonbreCampos(String tabla){
-        ArrayList<String> fields= new ArrayList<String>();
-        
-        DatabaseMetaData dbmd;
-        try {
-            dbmd = con.getMetaData();
-            ResultSet chms = dbmd.getTables(null, null, "%", null);
-            while (chms.next())
-            {
-                fields.add( chms.getString(3) );
-            }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(Exception e){
-        }
-        return fields;
-        
-        
-    }
-    public void cerrar(){
-        try {
-            if(this.con== null || this.con.isClosed())
-                return;
-                this.con.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        
-    }
+    
 }

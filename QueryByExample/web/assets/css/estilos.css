@@ -117,10 +117,37 @@ main{
 .show-tables li button{ width: 100%; text-align: left; padding: 5px; cursor: pointer}
 .show-tables li button:hover{ background-color: #1c72ac4f}
 
-
+#area-principal{
+    width: 80%; float: left; height: 100%;
+}
+.toolbar{
+    height: 50px;
+    background-color: #0e73b6;
+    padding: 5px 40px;
+    
+}
 #trabajo{
     background-color: rgb(107, 107, 107);
-    height: 100%;
+    height: calc(100vh - 50px);
     float: left;
-    width: 80%;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.control{
+    border-radius: 90px;
+    outline: none;
+    color:#0eb624;
+    
+}
+
+.tabla{
+    background-color: #fff;
+    margin:30px;
+}
+.tabla tr{
+    background-color: #0e73b66e;
+}
+.tabla tr:hover{
+    background-color: #0eb6b66e;
 }

@@ -17,7 +17,7 @@
     else if( session.getAttribute("basedatos")==null){
         response.sendRedirect("bddisponibles.jsp");
     }
-    
+    try{
     Conexion c = new Conexion(
             request.getSession().getAttribute("host").toString(),
             Integer.valueOf(request.getSession().getAttribute("puerto").toString()),
@@ -37,7 +37,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="assets/css/estilos.css">
         <link rel="stylesheet" href="assets/css/botones.css">
-        
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <title>JSP Page</title>
     </head>
     <body>
@@ -47,11 +47,18 @@
             <li><button class="table-button"><%= bds.get(i)%></button></li>
             <%}%>
         </ul>
-        <div id="trabajo">
-            
+        <div id="area-principal">
+            <div class="toolbar">
+            <button class="control" style="font-size:24px"><i class="material-icons">done</i></button>
+            </div>
+            <div id="trabajo">
+        
+                </div>
         </div>
+        
 
 
         <script src="assets/js/qbe.js"></script>
     </body>
 </html>
+<%}catch(Exception e){}%>

@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 
+import db.Conexion;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,21 +30,45 @@ public class traertabla extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet traertabla</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet traertabla at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            
+            String host,  us, pass, baseDatos;
+            int puerto = 0;
+            host = request.getSession().getAttribute("host").toString();
+            us = request.getSession().getAttribute("usuario").toString();
+            pass = request.getSession().getAttribute("contrasena").toString();
+            baseDatos = request.getSession().getAttribute("basedatos").toString();
+            puerto = Integer.valueOf(request.getSession().getAttribute("puerto").toString());
+            
+            Conexion c = new Conexion(host, puerto, us, pass, baseDatos);
+            ArrayList<ArrayList> datos = c.ejecutarConsulta("SELECT * FROM " + request.getParameter("tabla"));
+            c.desconectar();
+            
+            //out.println("{\""+request.getParameter("tabla")+"\":"+datos.size()+"}");
+            out.println(this.convertirAJSON(datos));
+            
         }
     }
-
+    private String convertirAJSON(ArrayList<ArrayList> ar){
+        String  json= "[";
+        for(int row = 0; row<ar.size(); row++){
+            String columnas = "[";
+            for(int i=0; i<ar.get(row).size(); i++){
+                columnas+= "\""+ar.get(row).get(i)+"\"";
+                if(!((i+1)== ar.get(row).size()))
+                    columnas+=",";
+            }
+            columnas += "]";
+            json+=columnas;
+            if( !((row+1)== ar.size()) )
+                json+=",";
+        }
+        
+        
+        return json+"]";
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
