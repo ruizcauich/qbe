@@ -43,7 +43,15 @@ public class traertabla extends HttpServlet {
             puerto = Integer.valueOf(request.getSession().getAttribute("puerto").toString());
             
             Conexion c = new Conexion(host, puerto, us, pass, baseDatos);
-            ArrayList<ArrayList> datos = c.ejecutarConsulta("SELECT * FROM " + request.getParameter("tabla"));
+            
+            ArrayList<ArrayList> datos;
+            
+            if(request.getParameter("fields")==null){
+                datos = c.ejecutarConsulta("SELECT * FROM " + request.getParameter("tabla"));
+            }
+            else{
+                datos = c.ejecutarConsulta("SELECT "+ request.getParameter("fields") + " FROM " + request.getParameter("tabla"));
+            }
             c.desconectar();
             
             //out.println("{\""+request.getParameter("tabla")+"\":"+datos.size()+"}");

@@ -49,11 +49,11 @@
         </ul>
         <div id="area-principal">
             <div class="toolbar">
-            <button class="control" style="font-size:24px"><i class="material-icons">done</i></button>
+            <button class="control" style="font-size:24px" id="filtrar"><i class="material-icons">done</i></button>
             </div>
             <div id="trabajo">
         
-                </div>
+            </div>
         </div>
         
 
