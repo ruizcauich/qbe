@@ -44,17 +44,34 @@ public class traertabla extends HttpServlet {
             
             Conexion c = new Conexion(host, puerto, us, pass, baseDatos);
             
+            String prueba= request.getParameter("where");
             ArrayList<ArrayList> datos;
-            
-            if(request.getParameter("fields")==null){
+         
+            if(request.getParameter("fields")==null && request.getParameter("where")==null){
                 datos = c.ejecutarConsulta("SELECT * FROM " + request.getParameter("tabla"));
             }
-            else{
+            
+            else if(request.getParameter("where")==null ||request.getParameter("where").length()==0 ){
                 datos = c.ejecutarConsulta("SELECT "+ request.getParameter("fields") + " FROM " + request.getParameter("tabla"));
             }
+            
+            else{
+                String condiciones [] = request.getParameter("where").split(",");
+                String where = " WHERE ";
+                
+                for(int i = 0; i < condiciones.length; i++){
+                    if((condiciones.length-1) == i){
+                        where+= condiciones[i];
+                    }
+                    else{
+                        where+= condiciones[i] + " AND ";
+                    }
+                }
+                datos = c.ejecutarConsulta("SELECT "+ request.getParameter("fields") + " FROM " + request.getParameter("tabla") + where);
+           }
+            
             c.desconectar();
             
-            //out.println("{\""+request.getParameter("tabla")+"\":"+datos.size()+"}");
             out.println(this.convertirAJSON(datos));
             
         }
