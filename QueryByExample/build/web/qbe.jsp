@@ -50,6 +50,7 @@
         <div id="area-principal">
             <div class="toolbar">
             <button class="control" style="font-size:24px" id="filtrar"><i class="material-icons">done</i></button>
+            <button class="control" style="font-size:24px; margin-left:80px" id="insertar"><i class="material-icons">add</i></button>
             </div>
             <div id="trabajo">
         
@@ -59,6 +60,7 @@
 
 
         <script src="assets/js/qbe.js"></script>
+        <script src="assets/js/insert_qbe.js"></script>
     </body>
 </html>
 <%}catch(Exception e){}%>

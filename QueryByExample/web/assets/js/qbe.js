@@ -126,7 +126,9 @@ function filtro(){
     
     where = crearWhere(Object.values(objeto));
     
-    console.log(where);
+    console.log(objeto);
+    
+    
     
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
