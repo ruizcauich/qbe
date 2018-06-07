@@ -44,6 +44,10 @@ function ponerTabla( dat,nombreTabla ){
        var th = document.createElement("th");
        var td = document.createElement("td");
        var check = document.createElement("input");
+       var field = document.createElement("input");
+       
+       field.type="text";
+       field.id=nombreTabla +"." +c;
        check.type="checkbox";
        check.checked = "true";
        
@@ -59,6 +63,7 @@ function ponerTabla( dat,nombreTabla ){
        
        //Añadimos al td nuestro check creado
        td.appendChild(check);
+       td.appendChild(field);
        
        th.innerHTML = c;
        
@@ -119,6 +124,12 @@ function filtro(){
     from = Object.keys(objeto).toString();
     select = Object.values(objeto).toString();
     
+    where = crearWhere(Object.values(objeto));
+    
+    console.log(objeto);
+    
+    
+    
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -128,7 +139,32 @@ function filtro(){
     
     xhttp.open("POST", "traertabla", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-    xhttp.send("tabla="+from+"&fields="+select);
+    xhttp.send("tabla="+from+"&fields="+select+"&where="+where);
     
+}
+/*
+function crearWhere(arreglo){
+    var where = [];
+    arreglo.forEach((campo)=>{
+        if(document.getElementById(campo).value!="")
+        where.push(campo + document.getElementById(campo).value);
+    });
+    return where.toString();
+}
+*/
+
+function crearWhere(arreglo){
+    
+    var where = [];
+    arreglo.forEach((campos)=>{
+        
+        campos.forEach((campo)=>{
+            if(document.getElementById(campo).value!="")
+            where.push(campo + document.getElementById(campo).value);
+        });
+        
+    });
+    
+    return where.toString();
 }
 
