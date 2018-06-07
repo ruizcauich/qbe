@@ -1,3 +1,5 @@
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -18,9 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author gerar
+ * @author Eyden Villanueva
  */
-public class insertartabla extends HttpServlet {
+public class eliminar extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,11 +33,11 @@ public class insertartabla extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws SQLException
-             {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+            /* TODO output your page here. You may use following sample code. */
             String host,  us, pass, baseDatos;
             int puerto = 0;
             host = request.getSession().getAttribute("host").toString();
@@ -46,47 +48,53 @@ public class insertartabla extends HttpServlet {
             
             Conexion c = new Conexion(host, puerto, us, pass, baseDatos);
             
-            //recoleccion de datos
+            
+            c.conectar();
+            int eliminado=0;
+            
             String tabla = request.getParameter("tabla");
-            String into = request.getParameter("into");
-            String values = request.getParameter("values");
+            String query = "DELETE FROM " + tabla + "  ";
+            String where = " WHERE  ";
             
-            int sizeCol = into.split(",").length;
-            int sizeVal = values.split(",").length;
+            String columnas [] = request.getParameter("fields").split(",");
+            String valores [] = request.getParameter("valores").split(",");
             
-            if(!values.equals("") && sizeCol == sizeVal){
-                
-                    c.conectar();
-                
-                    String valuesArray [] = values.split(",");
-                    String valuesQuery = "";
-                    
-                    for(int i = 0; i < valuesArray.length; i++){
-                        if(valuesArray.length-1 == i){
-                            valuesQuery+= "?";
-                        }
-                        else{valuesQuery+="?,";}
-                    }
-
-                    String query = "INSERT INTO " + tabla + " ("+ into + " ) VALUES (" + valuesQuery + " )" ;
-
-                    PreparedStatement ps = c.getConnectionToDB().prepareStatement(query);
-
-                    for(int i = 0; i < valuesArray.length; i++){
-                        ps.setString(i+1, valuesArray[i]);
-                    }
-                    
-                    int respuesta = ps.executeUpdate();
-                    out.println(respuesta);
+            for(int i = 0; i < columnas.length; i++){
+                if( esFlotante(valores[i]) ){
+                     where+= "CONVERT("+columnas[i] + ",CHAR) = CONVERT(" + valores[i] + ",CHAR)   ";
+                }else {
+                    where+= columnas[i] + " = ? ";
                 }
-                else {
-                out.println(0);
                 
+                if(!(columnas.length-1 == i)){
+                    where+=  "   AND ";
+                }
             }
-            c.desconectar();            
             
-        } catch (IOException ex) {
-            Logger.getLogger(insertartabla.class.getName()).log(Level.SEVERE, null, ex);
+            query+= where;
+            
+            PreparedStatement ps = c.getConnectionToDB().prepareStatement(query);
+            try{
+                int indice_statement = 0;
+                for(int i = 0; i < valores.length; i++){
+                    if( !esFlotante( valores[i] )){
+                        ps.setString(indice_statement+1, valores[i]);
+                        indice_statement++;
+                    }
+                }
+                
+                
+                eliminado = ps.executeUpdate();
+            }catch(Exception e){
+                out.println(e);
+            }
+            
+            
+            
+            out.println(eliminado);
+            
+            c.desconectar();
+               
         }
     }
 
@@ -105,7 +113,7 @@ public class insertartabla extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(insertartabla.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(eliminar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -123,7 +131,7 @@ public class insertartabla extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(insertartabla.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(eliminar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -136,5 +144,14 @@ public class insertartabla extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+    public boolean esFlotante(String val){
+        try{
+            Float.parseFloat(val);
+            return true;
+        }catch(Exception e){
+            
+        }
+        return false;
+    }
 }
+

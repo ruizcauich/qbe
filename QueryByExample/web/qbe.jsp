@@ -62,6 +62,8 @@
 
         <script src="assets/js/qbe.js"></script>
         <script src="assets/js/insert_qbe.js"></script>
+        <script src="assets/js/eliminar.js"></script>
+        <script src="assets/js/editar.js"></script>
     </body>
 </html>
 <%}catch(Exception e){}%>

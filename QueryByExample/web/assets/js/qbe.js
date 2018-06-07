@@ -94,22 +94,50 @@ function getSeleccion(nombreTabla,columna,check){
 }
 
 
-
+var nombresColumnas;
 function mostrarFiltro(dat){
+    
+    var contador = 0;
     
     var tabla = document.createElement("table");
   
     dat.forEach((row)=>{
         var tr = document.createElement("tr");
-        
+        if(contador==0)
+            nombresColumnas = row.toString();
+        if(Object.keys(objeto).length  == 1){
+            var tdEliminar = document.createElement("td");
+            if(contador >= 1){
+                //tdEliminar.innerHTML="<button onclick='eliminar(contador)'> <i class='material-icons'>delete</i></button>";
+                
+                //boton eliminar
+                var btnEliminar =document.createElement("button");
+                btnEliminar.innerHTML = "<i class='material-icons'>delete</i>";   
+                btnEliminar.dataset.values=row.toString();
+                btnEliminar.addEventListener("click",eliminarDatos);
+                tdEliminar.appendChild(btnEliminar);
+                
+                //boton editar
+                var btnEditar =document.createElement("button");
+                btnEditar.innerHTML = "<i class='material-icons'>create</i>";   
+                btnEditar.dataset.values=row.toString();
+                btnEditar.addEventListener("click",editarDatos);
+                tdEliminar.appendChild(btnEditar);
+            }
+            tr.appendChild(tdEliminar);
+        }
         
         row.forEach((dato)=>{
+            //<i class="material-icons">delete</i>
+
             var td = document.createElement("td");
             td.innerText = dato;
+            
             tr.appendChild(td);
         });
         
         tabla.appendChild(tr);
+        contador++;
     });
     
     results = document.getElementById("results");
@@ -127,7 +155,7 @@ function filtro(){
     
     where = crearWhere(Object.values(objeto));
     
-    console.log(objeto);
+    
     
     
     
@@ -143,16 +171,6 @@ function filtro(){
     xhttp.send("tabla="+from+"&fields="+select+"&where="+where);
     
 }
-/*
-function crearWhere(arreglo){
-    var where = [];
-    arreglo.forEach((campo)=>{
-        if(document.getElementById(campo).value!="")
-        where.push(campo + document.getElementById(campo).value);
-    });
-    return where.toString();
-}
-*/
 
 function crearWhere(arreglo){
     
@@ -167,5 +185,18 @@ function crearWhere(arreglo){
     });
     
     return where.toString();
+}
+
+
+function limpiarInputs(arreglo){
+    arreglo.forEach((campos)=>{
+        
+        campos.forEach((campo)=>{
+            console.log(campo)
+            document.getElementById(campo).value = "";
+        });
+        
+    });
+    
 }
 

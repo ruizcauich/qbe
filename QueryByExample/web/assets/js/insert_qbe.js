@@ -20,7 +20,7 @@ function insertar(){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-          resultado(this.responseText)
+          resultadoInsertar(this.responseText)
        }
     };
     
@@ -41,15 +41,17 @@ function obtenerValues(arreglo){
         
     });
     
-    console.log(values);
+    
     
     return values.toString();
 }
 
-function resultado(mensaje){
-    console.log(mensaje);
+function resultadoInsertar(mensaje){
+    
     if(mensaje>0){
         alert("Registro insertado exitosamente");
+        limpiarInputs(Object.values(objeto));
+        filtro();
     }
     else{
         alert("Error al Insertar");
