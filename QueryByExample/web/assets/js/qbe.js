@@ -112,9 +112,10 @@ function mostrarFiltro(dat){
         tabla.appendChild(tr);
     });
     
-    trabajo = document.getElementById("trabajo");
-    tabla.classList.add("tabla");
-    trabajo.appendChild(tabla);
+    results = document.getElementById("results");
+    results.innerHTML="";
+    tabla.classList.add("tabla-result");
+    results.appendChild(tabla);
     
    }
 

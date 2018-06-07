@@ -54,6 +54,7 @@
             <div id="trabajo">
         
             </div>
+            <div id="results"></div>
         </div>
         
 
