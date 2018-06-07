@@ -48,4 +48,10 @@ function obtenerValues(arreglo){
 
 function resultado(mensaje){
     console.log(mensaje);
+    if(mensaje>0){
+        alert("Registro insertado exitosamente");
+    }
+    else{
+        alert("Error al Insertar");
+    }
 }

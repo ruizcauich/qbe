@@ -8,6 +8,9 @@ import db.Conexion;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,8 +31,8 @@ public class insertartabla extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws SQLException
+             {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
@@ -52,26 +55,50 @@ public class insertartabla extends HttpServlet {
             int sizeVal = values.split(",").length;
             
             if(!values.equals("") && sizeCol == sizeVal){
-                String query = "INSERT INTO " + tabla + " ("+ into + " ) VALUES (" + values + " )" ;
                 
-                PreparedStatement ps = c.getConnectionToDB().prepareStatement(query);
+                    c.conectar();
                 
-                
-                
-                boolean respuesta = c.ejecutarInstruccion(query);
-                
-                out.println(respuesta);
-                
-            } else {
-                out.println("false");
+
+                    String valuesArray [] = values.split(",");
+                    String valuesQuery = "";
+
+                    for(int i = 0; i < valuesArray.length; i++){
+                        if(valuesArray.length-1 == i){
+                            valuesQuery+= "?";
+                        }
+                        else{
+                            valuesQuery+="?,";
+                        }
+                    }
+
+
+                    String query = "INSERT INTO " + tabla + " ("+ into + " ) VALUES (" + valuesQuery + " )" ;
+
+                    PreparedStatement ps = c.getConnectionToDB().prepareStatement(query);
+
+                    for(int i = 0; i < valuesArray.length; i++){
+                        ps.setString(i+1, valuesArray[i]);
+                    }
+
+
+                    int respuesta = ps.executeUpdate();
+
+
+
+                    out.println(respuesta);
+                }
+                else {
+                out.println(0);
                 
             }
             
-            
+                
             
             c.desconectar();
             
             
+        } catch (IOException ex) {
+            Logger.getLogger(insertartabla.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -87,7 +114,11 @@ public class insertartabla extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(insertartabla.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -101,7 +132,11 @@ public class insertartabla extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(insertartabla.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
