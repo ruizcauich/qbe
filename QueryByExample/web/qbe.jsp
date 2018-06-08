@@ -51,6 +51,7 @@
             <div class="toolbar">
             <button class="control" style="font-size:24px" id="filtrar"><i class="material-icons">done</i></button>
             <button class="control" style="font-size:24px; margin-left:80px" id="insertar"><i class="material-icons">add</i></button>
+            <button class="control" style="font-size:24px; margin-left:80px" id="editar"><i class="material-icons">create</i></button>
             </div>
             <div id="trabajo">
         
